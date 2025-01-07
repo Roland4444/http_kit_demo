@@ -35,6 +35,13 @@
                                 {:name "roman"})})  ;
 
 
+(defn mustache_render_ws_template [request]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body (mustache/render-resource "templates/ws.html"
+                                 {})})  ;                
+
+
 (defn foo
   "I don't do a whole lot."
   [x]
@@ -50,6 +57,7 @@
 (defroutes all-routes
   (GET "/" [] mustache_render_plain)
   (GET "/template" [] mustache_render_template)
+  (GET "/ws_template" [] mustache_render_ws_template)
   (GET "/img" [] mustache_render_template_with_static)
 
   (GET "/ws" [] chat-handler)     ;; websocket
