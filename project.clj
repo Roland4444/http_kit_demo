@@ -8,5 +8,8 @@
                  [ring/ring-core "1.7.1"]
                  [compojure "1.6.0"]  
                  [http-kit "2.8.0"]
-                 [de.ubercode.clostache/clostache "1.4.0"]]
+                 [de.ubercode.clostache/clostache "1.4.0"]
+                 [enlive "1.1.6"]   
+                 [hiccup "1.0.5"]
+                 ]
   :repl-options {:init-ns hello-world.core})
