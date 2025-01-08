@@ -3,6 +3,7 @@
            [clostache.parser :as mustache]
            [net.cgrand.enlive-html :as html]
            [hello-world.views.index :refer [index-page]]
+           [hello-world.views.i2 :refer [i2]]          
            )
  (:use [compojure.route :only [files not-found]]
        [compojure.core :only [defroutes GET POST DELETE ANY context]]  ;;https://http-kit.github.io/server.html#routing
@@ -106,9 +107,8 @@
   (GET "/indx_handler" [] index-page)
   (GET "/enlive_temp" [] enlive_handler)
   (GET "/ws2" [] index2)
-
+  (GET "/i2" [] i2)
   (GET "/ws" [] chat-handler)     ;; websocket
-
   (files "/static/") ;; static file url prefix /static, in `public` folder   https://libraries.io/clojars/http-kit%2Flein-template
   (not-found "<p>Page not found.</p>")) ;; all other, return 404
 
@@ -118,3 +118,27 @@
 (defn -main [& args]
   (foo "HI!")
   (run-server all-routes {:port 11111}))
+
+
+(comment 
+sh-5.2$ wrk -t12 -c400 -d30s http://127.0.0.1:8080/i2
+unable to connect to 127.0.0.1:8080 Connection refused
+sh-5.2$ wrk -t12 -c400 -d30s http://127.0.0.1:11111/i2
+Running 30s test @ http://127.0.0.1:11111/i2
+  12 threads and 400 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    39.50ms   38.28ms 886.00ms   96.13%
+    Req/Sec     0.90k   311.08     3.21k    65.55%
+  317545 requests in 30.10s, 177.46MB read
+Requests/sec:  10548.04
+Transfer/sec:      5.89MB
+sh-5.2$ wrk -t12 -c400 -d30s http://127.0.0.1:11111/ws2
+Running 30s test @ http://127.0.0.1:11111/ws2
+  12 threads and 400 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   171.16ms   78.29ms 475.98ms   81.57%
+    Req/Sec   196.24    101.72   670.00     58.15%
+  68668 requests in 30.10s, 117.35MB read
+Requests/sec:   2281.25
+Transfer/sec:      3.90MB
+)  
